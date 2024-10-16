@@ -3,7 +3,6 @@
     <div v-if="isLoading">Загрузка...</div>
     <div v-else-if="generating" class="generating">
       <h2>Идет генерация сущностей</h2>
-      <img class="generating-img" src="/generating.webp">
     </div>
     <div v-else class="main-container">
       <h1>Генератор сущностей</h1>
