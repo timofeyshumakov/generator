@@ -6,6 +6,45 @@
     </div>
     <div v-else class="main-container">
       <h1>Генератор сущностей</h1>
+      <v-dialog v-model="dialogSucces" max-width="600">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Успешно</span>
+          </v-card-title>
+          <v-card-text>
+            <p>Заданные сущности успешно созданы</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="green" text @click="dialogSucces = false">Закрыть</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog" max-width="600">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Ошибка</span>
+          </v-card-title>
+          <v-card-text>
+            <p>Произошла ошибка при выполнении операции. Пожалуйста, попробуйте еще раз.</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="red" text @click="dialog = false">Закрыть</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogSelect" max-width="600">
+        <v-card>
+          <v-card-title>
+            <span class="headline">Ошибка</span>
+          </v-card-title>
+          <v-card-text>
+            <p>Выберите создаваемые сущности</p>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="red" text @click="dialogSelect = false">Закрыть</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-form>
         <v-select v-model="selectedUsers" :items="users" label="Выберите пользователей" item-title="FULL_NAME" item-value="ID" multiple chips clearable>
           <template v-slot:prepend-item>
@@ -17,7 +56,7 @@
             </v-list-item>
           </template>
         </v-select>
-        <v-select v-model="selected" :items="items" label="Выберите создаваемые сущности" @update:modelValue="showAlert" multiple chips clearable>
+        <v-select v-model="selected" :items="items" label="Выберите создаваемые сущности" @update:modelValue="showPannel" multiple chips clearable>
           <template v-slot:prepend-item>
             <v-list-item @click="">
               <v-list-item-content>
@@ -117,6 +156,9 @@
           selectAllUsers: false,
           selectAllObjects: false,
           selected: null,
+          dialog: false,
+          dialogSelect: false,
+          dialogSucces: false,
         };
       },
       computed: {
@@ -146,7 +188,7 @@
             this.disabled = this.disabled.map(() => true);
           }
         },
-        showAlert(value) {
+        showPannel(value) {
           Array.from(document.getElementsByClassName("panel")).forEach((el, i) => {
             if (value.includes(this.items[i])) {
               this.disabled[i] = false;
@@ -158,6 +200,12 @@
           });
         },
         generateData() {
+
+          if(this.selected === null || this.selected.length === 0){
+            this.dialogSelect = true;
+            return;
+          }
+
           const year = 365.25 * 24 * 60 * 60 * 1000;
           let data = [];
           let d = 0;
@@ -286,7 +334,6 @@
                     }
                   }
                 })
-                data[d].HONORIFIC = gender === 'm' ? 'HNR_RU_1' : 'HNR_RU_2';
                 switch (data[d].ADDRESS_CITY) {
                   case 'Москва':
                     data[d].ADDRESS_POSTAL_CODE = `12${this.randomNumber(4)}`;
@@ -315,6 +362,7 @@
                     break;
                   case 'Контакты':
                     methods[d] = 'contact';
+                    data[d].HONORIFIC = gender === 'm' ? 'HNR_RU_1' : 'HNR_RU_2';
                     break;
                   default:
                     break;
@@ -323,7 +371,7 @@
               }
             })
           }
-          this.generatingOn();
+          this.generating = true;
           this.handleSubmit(data, methods);
         },
         deafaultField(type, key, obj, country) {
@@ -555,45 +603,53 @@
           }
         },
         async handleSubmit(data, methods) {
-          if (data.length === 1) {
-            await new Promise((resolve, reject) => {
-              BX24.callMethod(`crm.${methods[0]}.add`, {
-                fields: data[0],
-              }, (res) => {
-                if (res.data()) {
-                  resolve();
-                }
-              });
-            });
-          } else if (data.length > 1) {
-            let cmd = {};
-            for (let i = 0; i < data.length; i++) {
-              const key = `cmd${i}`;
-              const value = {
-                method: `crm.${methods[i]}.add`,
-                params: {
-                  fields: data[i]
-                }
-              };
-              cmd[key] = value;
-              if (!this.newObjects[methods[i]]) {
-                this.newObjects[methods[i]] = [];
-              }
-              if ((i + 1) % 50 === 0 || i + 1 === data.length) {
-                const batchLength = (i + 1) % 50 === 0 ? 50 : (data.length);
-                await new Promise((resolve, reject) => {
-                  BX24.callBatch(cmd, (res) => {
-                    for (let r = i - batchLength + 1; r < i + 1; r++) {
-                      this.newObjects[methods[r]].push(res[`cmd${r}`].data());
-                    }
+          const maxTotal = 50;
+          try {
+            if (data.length === 1) {
+              await new Promise((resolve, reject) => {
+                BX24.callMethod(`crm.${methods[0]}.add`, {
+                  fields: data[0],
+                }, (res) => {
+                  if (res.data()) {
                     resolve();
-                  });
-                })
-                cmd = {};
+                  }
+                });
+              });
+            } else if (data.length > 1) {
+              let cmd = {};
+              for (let i = 0; i < data.length; i++) {
+                const key = `cmd${i}`;
+                const value = {
+                  method: `crm.${methods[i]}.add`,
+                  params: {
+                    fields: data[i]
+                  }
+                };
+                cmd[key] = value;
+                if (!this.newObjects[methods[i]]) {
+                  this.newObjects[methods[i]] = [];
+                }
+                if ((i + 1) % maxTotal === 0 || i + 1 === data.length) {
+                  const batchLength = (i + 1) % maxTotal === 0 ? maxTotal : (data.length % maxTotal);
+                  await new Promise((resolve, reject) => {
+                    BX24.callBatch(cmd, (res) => {
+                      for (let r = i - batchLength + 1; r < i + 1; r++) {
+                        this.newObjects[methods[r]].push(res[`cmd${r}`].data());
+                      }
+                      resolve();
+                    });
+                  })
+                  cmd = {};
+                }
               }
             }
+            await this.updateObjects(this.newObjects);
+            this.dialogSucces = true;
+            this.generating = false;
+          } catch (error) {
+            this.dialog = true;
+            this.generating = false;
           }
-          this.updateObjects(this.newObjects);
         },
         async updateObjects(objects) {
           let cmd = {};
@@ -649,27 +705,31 @@
             });
             obj++;
           }
-          this.generatingOff();
         },
         async updateFunction(totalCount, cmd) {
-          if (totalCount === 1) {
-            await new Promise((resolve, reject) => {
-              BX24.callMethod(`crm.${Object.keys(objects)[0]}.update`, {
-                id: cmd.cmd0.id,
-                fields: cmd.cmd0.fields,
-              }, (res) => {
-                if (res.data()) {
+          try{
+            if (totalCount === 1) {
+              await new Promise((resolve, reject) => {
+                BX24.callMethod(`crm.${Object.keys(objects)[0]}.update`, {
+                  id: cmd.cmd0.id,
+                  fields: cmd.cmd0.fields,
+                }, (res) => {
+                  if (res.data()) {
+                    resolve();
+                  }
+                });
+              });
+            } else {
+              await new Promise((resolve, reject) => {
+                BX24.callBatch(cmd, (res) => {
                   resolve();
-                }
-              });
-            });
-          } else {
-            await new Promise((resolve, reject) => {
-              BX24.callBatch(cmd, (res) => {
-                resolve();
-              });
-            })
-          }
+                });
+              })
+            }
+          } catch (error) {
+            this.dialog = true;
+            this.generating = false;
+          } 
         },
         async callApi(method, filter, select) {
           if (!filter) {
