@@ -9,5 +9,5 @@
  <p>• Создание связей: Пользователь может установить связи между сгенерированными сущностями (например, связать компанию со сделкой или контакт со сделкой).</p>
 <p>Ссылка на приложение: https://bodrii.bitrix24.ru/marketplace/app/185/</p>
 <p>Было выделенно времени: 5 дней</p>
-<p>Затрачено времени: 4 дня на разработку и 1 день на тестирование</p>
+<p>Затрачено времени: 5 дня на разработку и 1 день на тестирование</p>
 <p>Понравилось приложение? закажите похожее: <a target="_blank" href="https://t.me/timofey_bitrix24"><img alt="telegram"  width="32px" height="32px" title="telegram" src="https://github.com/user-attachments/assets/9092b79a-c4e0-45e0-af75-86ce4ad47b8b"></a> <a target="_blank" href="https://vk.com/timofey_bitrix24"><img  width="32px" height="32px" alt="vk" title="vk" src="https://github.com/user-attachments/assets/93ea1801-dd33-43ad-99c1-79c41c8ddfbd"></a></p>
