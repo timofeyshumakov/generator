@@ -9,4 +9,14 @@
   <p> • Создание связей: Пользователь может установить связи между сгенерированными сущностями (например, связать компанию со сделкой или контакт со сделкой).</p>
 <h4>Было выделенно времени: 5 дней</h4>
 <h4>Затрачено времени: 5 дней на разработку и 1 день на тестирование</h4>
+<h4>Демонстрация работы приложения:</h4>
+<table width="100%" cellSpacing="1" cellpadding="1" border="1">
+  <tr>
+    <td><img  width="100%" src="https://github.com/user-attachments/assets/d4d53a20-53d4-48f2-b5da-1263b60c5de1"><div align="center">Начальный экран</div></td>
+    <td><img  width="100%" src="https://github.com/user-attachments/assets/fbf8a3c1-cfa7-46ea-a6e1-eb834275a767"><div align="center">Выбор параметров</div></td>
+  </tr>
+  <tr>
+    <td><img  width="100%" src="https://github.com/user-attachments/assets/21de2128-bcbb-48e0-9ff5-8c8681a533f8"><div align="center">Создание сущностей</div></td>
+  </tr>
+</table>
 <h3>Понравилось приложение? закажите похожее: <a target="_blank" href="https://t.me/timofey_bitrix24"><img alt="telegram"  width="32px" height="32px" title="telegram" src="https://github.com/user-attachments/assets/9092b79a-c4e0-45e0-af75-86ce4ad47b8b"></a> <a target="_blank" href="https://vk.com/timofey_bitrix24"><img  width="32px" height="32px" alt="vk" title="vk" src="https://github.com/user-attachments/assets/93ea1801-dd33-43ad-99c1-79c41c8ddfbd"></a></h3>
