@@ -14,6 +14,25 @@
   <p> • Создание связей: Пользователь может установить связи между сгенерированными сущностями (например, связать компанию со сделкой или контакт со сделкой).</p>
 <h4>Было выделенно времени: 5 дней</h4>
 <h4>Затрачено времени: 5 дней на разработку и 1 день на тестирование</h4>
+  <h4>Использованные технологии: </h4>
+  <table cellSpacing="1" cellpadding="1" border="1">
+    <tr>
+      <td><img width="64px" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Vuetify-Light.svg"></td>
+      <td><img  width="64px" src="https://github.com/tandpfun/skill-icons/blob/main/icons/VueJS-Light.svg"></td>
+      <td><img  width="64px" src="https://github.com/tandpfun/skill-icons/blob/main/icons/JavaScript.svg"></td>
+      <td><img  width="64px" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Sass.svg"></td>
+      <td><img  width="64px" src="https://github.com/tandpfun/skill-icons/blob/main/icons/Vite-Light.svg"></td>
+      <td><img  width="64px" src="https://github.com/user-attachments/assets/8d146d5c-1c3e-40e5-af64-584c1aadf25f"></td>
+    </tr>
+    <tr>
+      <td align="center">Vuetify</td>
+    <td align="center">Vue.JS</td>
+    <td align="center">JavaScript</td>
+    <td align="center">Sass</td>
+    <td align="center">Vite</td>
+    <td align="center">Bitrix24</td>
+      </tr>
+  </table>
 <h4>Демонстрация работы приложения:</h4>
 <table width="100%" cellSpacing="1" cellpadding="1" border="1">
   <tr>
