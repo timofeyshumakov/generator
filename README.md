@@ -1,6 +1,6 @@
 <h2>Генератор сущностей</h2>
-<table width="100%" cellSpacing="1" cellpadding="1" border="1">
-<tr><td><img  width="100%" src="https://github.com/user-attachments/assets/12927cab-59d8-43b6-b64f-b8a9bdc252e4"></td></tr>
+<table width="600px" cellSpacing="1" cellpadding="1" border="1">
+<tr><td><img  width="600px" src="https://github.com/user-attachments/assets/12927cab-59d8-43b6-b64f-b8a9bdc252e4"></td></tr>
 </table>
 <p>Данный отчет описывает разработку приложения, предназначенного для генерации выбранных сущностей (компания, сделка, контакт) с возможностью настройки параметров генерации, включая выбор полей, заполнение значений, назначение ответственных пользователей и установление связей между сущностями.</p>
 <h4>Приложение предоставляет пользователю следующие возможности:</h4>
